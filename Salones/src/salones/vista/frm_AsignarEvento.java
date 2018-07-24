@@ -10,6 +10,7 @@ import Salones.modelo.Catalogo_Evento;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import salones.controlador.Asignacion_EventoControlador;
 import salones.modelo.Feriado;
@@ -297,25 +298,34 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
         spn_Duracion.setValue(duracion_Evento);
     }//GEN-LAST:event_comboEventoActionPerformed
     LocalDate fecha_fin;
+    int hora_fin = 0;
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
         // TODO add your handling code here:
         crearColumnas();
         crearFilas();
         llenarCeldas();
         Asignacion_Evento ae = new Asignacion_Evento();
+        Date d = new Date();
+        String codigo = String.valueOf(d.getTime());
+        ae.setCodigo(codigo);
         ae.setCodigo_evento(comboEvento.getItemAt(comboEvento.getSelectedIndex()).getCodigo());
         ae.setCodigo_salon(comboSalones.getItemAt(comboSalones.getSelectedIndex()).getCodigo());
         ae.setDias_se_inparte(dias_laborar);
         ae.setEstado_evento(0);
         ae.setFecha_inicio(dt_FechaI.getDate());
         ae.setFecha_fin(fecha_fin);
-        ae.set
-        System.out.println(ae);
-        
-
+        ae.setHoras_sesion(Integer.parseInt(spn_HorasSesion.getValue().toString()));
+        ae.setHora_inicio(cmbHorario_1.getItemAt(cmbHorario_1.getSelectedIndex()).getHora_inicio().getHours());
+        ae.setHora_fin(hora_fin);
+        Asignacion_EventoControlador aec = new Asignacion_EventoControlador();
+        //aec.insertarAsignacionEvento(ae);
+        for (String f : filas ){
+            System.out.println(aec.obtenerHorario(f));
+        }
     }//GEN-LAST:event_btnGenerarActionPerformed
     String dias_laborar = "";
     private void crearColumnas() {
+        
         tm = new DefaultTableModel(0, 1) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -384,7 +394,6 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
                     }
                 }
             }
-            System.out.println();
         }
     }
 
@@ -397,15 +406,19 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
         }
         return respuesta;
     }
-
+    ArrayList<String> filas = new ArrayList<>();
     private void crearFilas() {
         Integer cantidadSesion = (Integer) (spn_HorasSesion.getValue());
-        Integer hora = 7;
+        Integer hora = cmbHorario_1.getItemAt(cmbHorario_1.getSelectedIndex()).getHora_inicio().getHours();
+        filas.add(hora.toString());
         for (int i = 1; i <= cantidadSesion; i++) {
             Object[] rowData = {hora.toString() + ":00"};
+            filas.add(cmbHorario_1.getSelectedItem().toString());
             hora++;
             tm.addRow(rowData);
+            hora_fin = hora;
         }
+        System.out.println(filas);
     }
 
     private void llenarCeldas() {
@@ -422,7 +435,6 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
             for (int j = 0; j < cantidadSesion; j++) {
                 tm.setValueAt("201", j, i);
                 contador--;
-                System.out.println(contador);
                 if (contador == 0) {
                     break;
                 }

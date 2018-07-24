@@ -43,20 +43,20 @@ public class Database {
         }
     }
 
-    public boolean insertar(String consulta) {
+    public static int insertar(String consulta) {
 
         int resultado;
 
         try {
-
-            this.statement = this.link.createStatement();
-            resultado = this.statement.executeUpdate(consulta);
+            Database();
+            statement = link.createStatement();
+            resultado = statement.executeUpdate(consulta);
 
         } catch (SQLException e) {
-            this.mensajeError = e.getMessage();
-            return false;
+            mensajeError = e.getMessage();
+            return 0;
         }
-        return (resultado > 0);
+        return resultado;
     }
 
     public static ResultSet consultar(String consulta) {
