@@ -143,7 +143,7 @@ public class Asignacion_EventoControlador {
     }
     
     public int insertarCalendarioSalon(Calendario_Salon cs){
-        int respuesta = 0;
+        Integer respuesta = 0;
         String sql = "INSERT INTO tbl_calendario_x_salon (codigo_salon,codigo_fecha,codigo_horario,codigo_asignacion_evento) VALUES(" 
                 + cs.getCodigo_salon() + "," + cs.getCodigo_fecha() + "," + cs.getCodigo_horario() + ",'" + cs.getCodigo_asignacion() + "')";
         respuesta = Database.insertar(sql);
@@ -165,4 +165,5 @@ public class Asignacion_EventoControlador {
         //System.out.println("Resupuesta: " + respuesta);
         return respuesta;
     }
+    
 }

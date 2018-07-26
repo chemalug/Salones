@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import salones.controlador.Asignacion_EventoControlador;
@@ -285,20 +286,22 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
         dt_FechaI.setDateToToday();
 
         Asignacion_EventoControlador aec = new Asignacion_EventoControlador();
-        for (Salon salon : aec.obtenerSalones()) {
+        aec.obtenerSalones().forEach((salon) -> {
             comboSalones.addItem(salon);
-        }
-        for (Catalogo_Evento evento : aec.obtenerEventos()) {
+        });
+        aec.obtenerEventos().forEach((evento) -> {
             comboEvento.addItem(evento);
-        }
-        for (Horario horario : aec.obtenerHorario()) {
+        });
+        aec.obtenerHorario().forEach((horario) -> {
             cmbHorario_1.addItem(horario);
-        }
-        for (Feriado feriado : aec.obtenerFeriados()) {
+        });
+        aec.obtenerFeriados().stream().map((feriado) -> {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-d");
             LocalDate date = LocalDate.parse(feriado.toString(), dtf);
+            return date;
+        }).forEachOrdered((date) -> {
             listaDiasNoLaborales.add(date);
-        }
+        });
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -334,45 +337,62 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
 
         ArrayList<Horario> lstHorario = aec.obtenerHorario(filas.get(0), filas.get(filas.size() - 1));
         ArrayList<Fecha> lstFecha = aec.obtenerFecha(columnas);
+        ArrayList<Calendario_Salon> lstOcupados = new ArrayList<>();
         boolean bandera = false;
-        for (Fecha f : lstFecha) {
-            for (Horario h : lstHorario) {
+        lstFecha.forEach((Fecha f) -> {
+            lstHorario.stream().map((h) -> {
                 Calendario_Salon cs = new Calendario_Salon();
                 cs.setCodigo_salon(comboSalones.getItemAt(comboSalones.getSelectedIndex()).getCodigo());
                 cs.setCodigo_fecha(f.getCodigo());
                 cs.setCodigo_horario(h.getCodigo());
+                return cs;
+            }).map((cs) -> {
                 cs.setCodigo_asignacion(codigo);
-                if (aec.consulta(cs) == 1) {
-                    bandera = true;
-                    break;
-                }
-            }
-            if (bandera == true) {
-                break;
-            }
-        }
-        if (bandera != true) {
+                return cs;
+            }).filter((cs) -> (aec.consulta(cs) == 1)).forEachOrdered((cs) -> {
+                lstOcupados.add(cs);
+                //bandera = true;
+                //break;
+            });
+        });
+        
+        if (lstOcupados.isEmpty()) {
             aec.insertarAsignacionEvento(ae);
-            for (Fecha f : lstFecha) {
-                for (Horario h : lstHorario) {
+            lstFecha.forEach((Fecha f) -> {
+                lstHorario.stream().map((h) -> {
                     Calendario_Salon cs = new Calendario_Salon();
                     cs.setCodigo_salon(comboSalones.getItemAt(comboSalones.getSelectedIndex()).getCodigo());
                     cs.setCodigo_fecha(f.getCodigo());
                     cs.setCodigo_horario(h.getCodigo());
+                    return cs;
+                }).map((cs) -> {
                     cs.setCodigo_asignacion(codigo);
+                    return cs;
+                }).forEachOrdered((cs) -> {
                     aec.insertarCalendarioSalon(cs);
-                }
-            }
+                });
+            });
         } else {
+            
             JOptionPane.showMessageDialog(this, "Existen conflictos en las fechas");
+            mostrarOcupados(lstOcupados);
         }
+        
 
     }//GEN-LAST:event_btnGenerarActionPerformed
-    /**
-     *
-     * @return
-     */
-
+    private void mostrarOcupados(ArrayList<Calendario_Salon> lstOcupados){
+        
+        columnas.forEach((_c) -> {
+            filas.forEach((_f) -> {
+                System.out.println(_c + ":" + _f);
+            });
+        });
+        
+        lstOcupados.forEach((Calendario_Salon cs) -> {
+            
+            System.out.println(cs);
+        });
+    }
     /**
      *
      * @return
@@ -419,7 +439,7 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
             listaDias.add("SUNDAY");
             dias_laborar += "D";
         }
-        if (listaDias.size() != 0) {
+        if (!listaDias.isEmpty()) {
             dias_laborar = dias_laborar.substring(0, dias_laborar.length() - 1);
             Integer cantidadHoras = (Integer) (spn_Duracion.getValue());
             Integer cantidadSesion = (Integer) (spn_HorasSesion.getValue());
@@ -500,7 +520,7 @@ public class frm_AsignarEvento extends javax.swing.JFrame {
         int contador = cantidadHoras;
         for (int i = 1; i <= cantidadDias; i++) {
             for (int j = 0; j < cantidadSesion; j++) {
-                tm.setValueAt("201", j, i);
+                tm.setValueAt( comboSalones.getItemAt(comboSalones.getSelectedIndex()).getNombre_salon()  , j, i);
                 contador--;
                 if (contador == 0) {
                     break;
