@@ -118,6 +118,11 @@ public class frm_ConsultaSalon extends javax.swing.JFrame {
 
         btgInstructor.add(rdbPcIns1);
         rdbPcIns1.setText("Si");
+        rdbPcIns1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbPcIns1ActionPerformed(evt);
+            }
+        });
 
         btgInstructor.add(rdbPcIns0);
         rdbPcIns0.setText("No");
@@ -280,6 +285,10 @@ public class frm_ConsultaSalon extends javax.swing.JFrame {
         rdbProyector1.setEnabled(false);
         spnPcParticipantes.setEnabled(false);
     }//GEN-LAST:event_formWindowOpened
+
+    private void rdbPcIns1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbPcIns1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdbPcIns1ActionPerformed
 
     /**
      * @param args the command line arguments

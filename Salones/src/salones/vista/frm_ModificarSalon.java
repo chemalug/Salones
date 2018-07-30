@@ -202,7 +202,7 @@ public class frm_ModificarSalon extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("MODIFICACION DE SALONES");
+        jLabel1.setText("MODIFICACIÓN DE SALONES");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Botones"));
 
