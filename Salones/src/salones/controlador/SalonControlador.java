@@ -98,6 +98,7 @@ public class SalonControlador {
         int resultado;
         String sql = "DELETE FROM tbl_salon WHERE codigo = ?;";
         ps = con.preparar(sql);
+        
         try {
             ps.setInt(1, salon.getCodigo());
             resultado = this.ps.executeUpdate();
@@ -107,5 +108,5 @@ public class SalonControlador {
         }
         return (resultado > 0);
     }
-
+    
 }
