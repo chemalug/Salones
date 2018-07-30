@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import salones.controlador.Asignacion_EventoControlador;
 import salones.modelo.Feriado;
-import salones.modelo.Salon;
+import Salones.modelo.Salon;
 import salones.modelo.Horario;
 import salones.modelo.Asignacion_Evento;
 import salones.modelo.Calendario_Salon;

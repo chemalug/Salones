@@ -18,7 +18,7 @@ import salones.modelo.Asignacion_Evento;
 import salones.modelo.Calendario_Salon;
 import salones.modelo.Feriado;
 import salones.modelo.Horario;
-import salones.modelo.Salon;
+import Salones.modelo.Salon;
 
 /**
  *

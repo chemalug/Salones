@@ -1,4 +1,4 @@
-package salones.modelo;
+package Salones.modelo;
 
 public class Salon {
     private int codigo;
