@@ -1,4 +1,4 @@
-package salones.datos;
+package Salones.datos;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -17,9 +17,11 @@ public class Database {
 
     private static final String CLASE = "com.mysql.jdbc.Driver";
 
-    private static String host = "35.232.63.100";
+    //private static String host = "35.232.63.100";
+    private static String host = "localhost";
     private static String usuario = "root";
-    private static String clave = "Hola1234";
+    //private static String clave = "Hola1234";
+    private static String clave = "";
     private static String nombre = "db_salones";
     //private static String host = "localhost";
     //private static String clave = "";
@@ -43,20 +45,20 @@ public class Database {
         }
     }
 
-    public boolean insertar(String consulta) {
+    public static int insertar(String consulta) {
 
         int resultado;
 
         try {
-
-            this.statement = this.link.createStatement();
-            resultado = this.statement.executeUpdate(consulta);
+            Database();
+            statement = link.createStatement();
+            resultado = statement.executeUpdate(consulta);
 
         } catch (SQLException e) {
-            this.mensajeError = e.getMessage();
-            return false;
+            mensajeError = e.getMessage();
+            return 0;
         }
-        return (resultado > 0);
+        return resultado;
     }
 
     public static ResultSet consultar(String consulta) {
