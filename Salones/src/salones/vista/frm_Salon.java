@@ -89,7 +89,7 @@ public class frm_Salon extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("GESTION DE SALONES");
+        jLabel1.setText("GESTIÓN DE SALONES");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Equipamiento de Salones"));
         jPanel2.setToolTipText("");
